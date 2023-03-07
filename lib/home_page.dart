@@ -24,14 +24,28 @@ class _HomePageState extends State<HomePage> {
     _getAllContacts();
   }
 
+  // inicio da tela
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // barra de cabecalho
       appBar: AppBar(
         title: Text("Lista de Contatos"),
         backgroundColor: Color.fromARGB(255, 0, 102, 60),
         centerTitle: true,
         actions: <Widget>[
+          //botao search
+
+          IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {
+                setState(() {
+                  //add
+                  //_searchBoolean = true;
+                });
+              }),
+
+          // popup ordenacao
           PopupMenuButton<OrderOptions>(
             itemBuilder: (context) => <PopupMenuEntry<OrderOptions>>[
               const PopupMenuItem<OrderOptions>(
@@ -48,55 +62,70 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       backgroundColor: Colors.white,
+
+      //botao flutuante
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _showContactPage();
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add_alert),
         backgroundColor: Color.fromARGB(255, 0, 102, 60),
       ),
+
+      //corpo da aplicacao
       body: ListView.builder(
           padding: EdgeInsets.all(10.0),
           itemCount: contacts.length,
           itemBuilder: (context, index) {
+            // listar todos os contatos
             return _contactCard(context, index);
           }),
     );
   }
 
+  // formulario - form
   Widget _contactCard(BuildContext context, int index) {
     return GestureDetector(
       child: Card(
+        // linha de contatos
         child: Padding(
           padding: EdgeInsets.all(10.0),
+
+          // componentes da linha de contatos - imagem
           child: Row(
             children: <Widget>[
+              // especificar formato campo imagem
               Container(
                 width: 80.0,
                 height: 80.0,
                 decoration: BoxDecoration(
-                  shape: BoxShape.circle,
+                  shape: BoxShape.rectangle,
                   image: DecorationImage(
                       image: contacts[index].img != null
                           ? FileImage(File(contacts[index].img))
-                          : AssetImage("./../images/person.png"),
+                          : AssetImage("images/person.png"),
                       fit: BoxFit.cover),
                 ),
               ),
+
+              // espaçamento entre as linhas
               Padding(
                 padding: EdgeInsets.only(left: 10.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start, //alinhamento
                   children: <Widget>[
+                    // primeira linha campo nome
                     Text(
                       contacts[index].name ?? "",
                       style: TextStyle(
                           fontSize: 22.0, fontWeight: FontWeight.bold),
                     ),
+                    // segunda linha campo email
                     Text(
                       contacts[index].email ?? "",
                       style: TextStyle(fontSize: 18.0),
                     ),
+                    // terceira linha campo fone
                     Text(
                       contacts[index].phone ?? "",
                       style: TextStyle(fontSize: 18.0),

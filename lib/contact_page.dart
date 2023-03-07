@@ -4,10 +4,13 @@ import 'package:apisqlite/database/connection_contact.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
+// widget será Statefull para mudar o estado
 class ContactPage extends StatefulWidget {
+  // declaracao de variaveis
   final Contact contact;
 
-  ContactPage({this.contact});
+  // Construtor que receber o contato da tela home
+  ContactPage({this.contact}); // {this.exemplo} parametroe opcional
 
   @override
   _ContactPageState createState() => _ContactPageState();
@@ -39,16 +42,20 @@ class _ContactPageState extends State<ContactPage> {
     }
   }
 
+  //inicio da tela
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
       onWillPop: _requestPop,
       child: Scaffold(
+        // barra de cabecalho
         appBar: AppBar(
           backgroundColor: Color.fromARGB(255, 0, 102, 60),
           title: Text(_editedContact.name ?? "Novo Contato"),
           centerTitle: true,
         ),
+
+        // botao flutuante
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             if (_editedContact.name != null && _editedContact.name.isNotEmpty) {
@@ -57,23 +64,26 @@ class _ContactPageState extends State<ContactPage> {
               FocusScope.of(context).requestFocus(_nameFocus);
             }
           },
-          child: Icon(Icons.save),
+          child: Icon(Icons.save_outlined), //icone salvar
           backgroundColor: Colors.red,
         ),
+
+        //corpo da aplicacao
         body: SingleChildScrollView(
           padding: EdgeInsets.all(10.0),
           child: Column(
             children: <Widget>[
+              // imagem
               GestureDetector(
                 child: Container(
                   width: 140.0,
                   height: 140.0,
                   decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+                    shape: BoxShape.rectangle,
                     image: DecorationImage(
                         image: _editedContact.img != null
                             ? FileImage(File(_editedContact.img))
-                            : AssetImage("./../images/person.png"),
+                            : AssetImage("images/person.png"),
                         fit: BoxFit.cover),
                   ),
                 ),
@@ -83,10 +93,12 @@ class _ContactPageState extends State<ContactPage> {
                     if (file == null) return;
                     setState(() {
                       _editedContact.img = file.path;
+                      print(file.path);
                     });
                   });
                 },
               ),
+              // campo nome
               TextField(
                 controller: _nameController,
                 focusNode: _nameFocus,
@@ -98,6 +110,7 @@ class _ContactPageState extends State<ContactPage> {
                   });
                 },
               ),
+              // campo email
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(labelText: "Email"),
@@ -107,6 +120,8 @@ class _ContactPageState extends State<ContactPage> {
                 },
                 keyboardType: TextInputType.emailAddress,
               ),
+
+              // campo phone
               TextField(
                 controller: _phoneController,
                 decoration: InputDecoration(labelText: "Phone"),

@@ -59,6 +59,19 @@ class ContactHelper {
     }
   }
 
+  Future<Contact> getContactSearch(int name) async {
+    Database dbContact = await db;
+    List<Map> maps = await dbContact.query(contactTable,
+        columns: [idColumn, nameColumn, emailColumn, phoneColumn, imgColumn],
+        where: "$nameColumn = ?",
+        whereArgs: [name]);
+    if (maps.length > 0) {
+      return Contact.fromMap(maps.first);
+    } else {
+      return null;
+    }
+  }
+
   Future<int> deleteContact(int id) async {
     Database dbContact = await db;
     return await dbContact
